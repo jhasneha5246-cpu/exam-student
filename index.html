@@ -1,0 +1,2172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduExam Portal - Complete Interactive System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+            --accent-color: #9b59b6;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        
+        .login-container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 420px;
+            transition: transform 0.3s;
+        }
+        
+        .login-container:hover {
+            transform: translateY(-5px);
+        }
+        
+        .login-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+        }
+        
+        .login-header h2 {
+            margin: 0;
+            font-weight: 700;
+            position: relative;
+        }
+        
+        .login-body {
+            padding: 30px;
+        }
+        
+        .form-control {
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+        }
+        
+        .btn-login {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            border: none;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            width: 100%;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .user-type-selector {
+            display: flex;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #e9ecef;
+        }
+        
+        .user-type {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .user-type.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+        }
+        
+        .dashboard {
+            display: none;
+            width: 100%;
+            max-width: 1400px;
+            margin: 20px auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--secondary-color), var(--dark-color));
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .dashboard-body {
+            background-color: white;
+            padding: 0;
+        }
+        
+        .sidebar {
+            background: linear-gradient(180deg, var(--secondary-color), var(--dark-color));
+            color: white;
+            padding: 25px 0;
+            height: 100%;
+            min-height: calc(100vh - 80px);
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .sidebar-menu li {
+            padding: 0;
+        }
+        
+        .sidebar-menu li a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 15px 25px;
+            transition: all 0.3s;
+            border-left: 4px solid transparent;
+        }
+        
+        .sidebar-menu li a:hover, .sidebar-menu li a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .sidebar-menu li a i {
+            width: 25px;
+            text-align: center;
+            margin-right: 10px;
+        }
+        
+        .content-area {
+            padding: 25px;
+            background-color: #f8f9fa;
+            min-height: calc(100vh - 80px);
+        }
+        
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 25px;
+            border: none;
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            border-radius: 12px 12px 0 0 !important;
+            padding: 18px 25px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .stats-card {
+            text-align: center;
+            padding: 25px 15px;
+            border-left: 5px solid var(--primary-color);
+        }
+        
+        .stats-card.warning {
+            border-left-color: var(--warning-color);
+        }
+        
+        .stats-card.success {
+            border-left-color: var(--success-color);
+        }
+        
+        .stats-card.danger {
+            border-left-color: var(--danger-color);
+        }
+        
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .stats-card.warning .stats-number {
+            color: var(--warning-color);
+        }
+        
+        .stats-card.success .stats-number {
+            color: var(--success-color);
+        }
+        
+        .stats-card.danger .stats-number {
+            color: var(--danger-color);
+        }
+        
+        .stats-label {
+            color: var(--dark-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .exam-card {
+            transition: transform 0.3s;
+            border-top: 4px solid var(--primary-color);
+        }
+        
+        .exam-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .alert {
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: none;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 12px;
+            font-size: 1.2rem;
+        }
+        
+        .logout-btn {
+            background-color: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .logout-btn:hover {
+            background-color: white;
+            color: var(--secondary-color);
+        }
+        
+        .badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        
+        .progress {
+            height: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        
+        .btn-action {
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .table th {
+            border-top: none;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .content-section {
+            display: none;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        .question-card {
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .timer {
+            background: linear-gradient(135deg, var(--warning-color), #e67e22);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .exam-progress {
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        
+        .option-label {
+            display: block;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .option-label:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+        
+        .option-input:checked + .option-label {
+            border-color: var(--primary-color);
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+        
+        .modal-content {
+            border-radius: 15px;
+            overflow: hidden;
+            border: none;
+        }
+        
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            border-bottom: none;
+            padding: 20px 25px;
+        }
+        
+        .modal-footer {
+            border-top: none;
+            padding: 20px 25px;
+        }
+        
+        .result-summary {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+        
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: conic-gradient(var(--success-color) 0% 75%, #e9ecef 75% 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+        
+        .score-circle::before {
+            content: '';
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+        }
+        
+        .score-text {
+            position: relative;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark-color);
+        }
+        
+        .course-card {
+            border-top: 4px solid var(--accent-color);
+        }
+        
+        .course-progress {
+            height: 8px;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--danger-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .notification-item {
+            position: relative;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .sidebar {
+                min-height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div class="login-container" id="loginPage">
+        <div class="login-header">
+            <h2><i class="fas fa-graduation-cap me-2"></i> EduExam Portal</h2>
+            <p class="mb-0 mt-2">Student Assessment & Learning System</p>
+        </div>
+        <div class="login-body">
+            <div class="user-type-selector">
+                <div class="user-type active" id="studentType">Student</div>
+                <div class="user-type" id="adminType">Admin</div>
+            </div>
+            
+            <div id="loginAlert" class="alert alert-danger" style="display: none;">
+                <i class="fas fa-exclamation-circle me-2"></i> Invalid credentials. Please try again.
+            </div>
+            
+            <form id="loginForm">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text bg-light"><i class="fas fa-user text-primary"></i></span>
+                        <input type="text" class="form-control" id="username" placeholder="Username" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text bg-light"><i class="fas fa-lock text-primary"></i></span>
+                        <input type="password" class="form-control" id="password" placeholder="Password" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-login mb-3">
+                    <i class="fas fa-sign-in-alt me-2"></i> Login to Portal
+                </button>
+            </form>
+            
+            <div class="mt-3 text-center">
+                <p class="text-muted small">Demo Credentials:</p>
+                <p class="text-muted small mb-1"><strong>Student:</strong> student / student123</p>
+                <p class="text-muted small"><strong>Admin:</strong> admin / admin123</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Student Dashboard -->
+    <div class="dashboard" id="studentDashboard">
+        <div class="dashboard-header">
+            <h3><i class="fas fa-graduation-cap me-2"></i> Student Dashboard</h3>
+            <div class="user-info">
+                <div class="user-avatar">S</div>
+                <span>Student User</span>
+                <button class="logout-btn ms-3" id="studentLogout"><i class="fas fa-sign-out-alt me-1"></i> Logout</button>
+            </div>
+        </div>
+        <div class="dashboard-body">
+            <div class="row g-0">
+                <div class="col-md-3">
+                    <div class="sidebar">
+                        <ul class="sidebar-menu">
+                            <li><a href="#" class="active" data-section="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                            <li><a href="#" data-section="courses"><i class="fas fa-book"></i> My Courses</a></li>
+                            <li><a href="#" data-section="exams"><i class="fas fa-file-alt"></i> Available Exams</a></li>
+                            <li><a href="#" data-section="results"><i class="fas fa-chart-bar"></i> Results & Progress</a></li>
+                            <li><a href="#" data-section="study-material"><i class="fas fa-file-pdf"></i> Study Material</a></li>
+                            <li><a href="#" data-section="settings"><i class="fas fa-cog"></i> Settings</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="content-area">
+                        <!-- Dashboard Section -->
+                        <div class="content-section active" id="dashboard-section">
+                            <h4 class="mb-4">Welcome back, Student!</h4>
+                            <p class="text-muted mb-4">Here's your learning progress and upcoming activities.</p>
+                            
+                            <div class="row mb-4">
+                                <div class="col-md-3">
+                                    <div class="card stats-card">
+                                        <div class="stats-number">5</div>
+                                        <div class="stats-label">Exams Completed</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card stats-card success">
+                                        <div class="stats-number">85%</div>
+                                        <div class="stats-label">Average Score</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card stats-card warning">
+                                        <div class="stats-number">3</div>
+                                        <div class="stats-label">Upcoming Exams</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card stats-card danger">
+                                        <div class="stats-number">2</div>
+                                        <div class="stats-label">Pending Assignments</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <span>Upcoming Exams</span>
+                                            <button class="btn btn-light btn-sm" id="viewAllExams">View All</button>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="list-group">
+                                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <h6 class="mb-1">Mathematics Final Exam</h6>
+                                                        <small class="text-muted"><i class="far fa-calendar me-1"></i> 15 June 2023 | <i class="far fa-clock me-1"></i> 2 hours</small>
+                                                    </div>
+                                                    <button class="btn btn-primary btn-sm btn-action start-exam" data-exam="math">Start Exam</button>
+                                                </div>
+                                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <h6 class="mb-1">Science Midterm</h6>
+                                                        <small class="text-muted"><i class="far fa-calendar me-1"></i> 20 June 2023 | <i class="far fa-clock me-1"></i> 1.5 hours</small>
+                                                    </div>
+                                                    <button class="btn btn-outline-primary btn-sm btn-action view-exam-details" data-exam="science">View Details</button>
+                                                </div>
+                                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <h6 class="mb-1">History Quiz</h6>
+                                                        <small class="text-muted"><i class="far fa-calendar me-1"></i> 25 June 2023 | <i class="far fa-clock me-1"></i> 45 minutes</small>
+                                                    </div>
+                                                    <button class="btn btn-outline-primary btn-sm btn-action view-exam-details" data-exam="history">View Details</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="card mt-4">
+                                        <div class="card-header">
+                                            Recent Exam Results
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Exam</th>
+                                                        <th>Date</th>
+                                                        <th>Score</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>English Literature</td>
+                                                        <td>10 May 2023</td>
+                                                        <td>92%</td>
+                                                        <td><span class="badge bg-success">Passed</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>History Quiz</td>
+                                                        <td>5 May 2023</td>
+                                                        <td>78%</td>
+                                                        <td><span class="badge bg-success">Passed</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Physics Test</td>
+                                                        <td>28 April 2023</td>
+                                                        <td>65%</td>
+                                                        <td><span class="badge bg-warning">Average</span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            Learning Progress
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="mb-4">
+                                                <div class="d-flex justify-content-between mb-1">
+                                                    <span>Mathematics</span>
+                                                    <span>75%</span>
+                                                </div>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 75%"></div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-4">
+                                                <div class="d-flex justify-content-between mb-1">
+                                                    <span>Science</span>
+                                                    <span>60%</span>
+                                                </div>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-success" role="progressbar" style="width: 60%"></div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-4">
+                                                <div class="d-flex justify-content-between mb-1">
+                                                    <span>English</span>
+                                                    <span>85%</span>
+                                                </div>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-info" role="progressbar" style="width: 85%"></div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                    <span>History</span>
+                                                    <span>45%</span>
+                                                </div>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 45%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="card mt-4">
+                                        <div class="card-header">
+                                            Quick Actions
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="d-grid gap-2">
+                                                <button class="btn btn-outline-primary btn-action" id="studyMaterialsBtn">
+                                                    <i class="fas fa-book me-2"></i> Study Materials
+                                                </button>
+                                                <button class="btn btn-outline-success btn-action" id="practiceTestsBtn">
+                                                    <i class="fas fa-tasks me-2"></i> Practice Tests
+                                                </button>
+                                                <button class="btn btn-outline-info btn-action" id="progressReportBtn">
+                                                    <i class="fas fa-chart-line me-2"></i> Progress Report
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Courses Section -->
+                        <div class="content-section" id="courses-section">
+                            <h4 class="mb-4">My Courses</h4>
+                            <p class="text-muted mb-4">Manage your enrolled courses and track your progress.</p>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card course-card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Mathematics</h5>
+                                            <p class="card-text text-muted">Advanced algebra, geometry, and calculus concepts.</p>
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <small class="text-muted">Progress</small>
+                                                <small class="text-muted">75%</small>
+                                            </div>
+                                            <div class="progress course-progress">
+                                                <div class="progress-bar bg-primary" role="progressbar" style="width: 75%"></div>
+                                            </div>
+                                            <div class="mt-3 d-flex justify-content-between">
+                                                <button class="btn btn-sm btn-outline-primary view-course-content" data-course="math">View Content</button>
+                                                <button class="btn btn-sm btn-primary continue-course" data-course="math">Continue</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card course-card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Science</h5>
+                                            <p class="card-text text-muted">Physics, chemistry, and biology fundamentals.</p>
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <small class="text-muted">Progress</small>
+                                                <small class="text-muted">60%</small>
+                                            </div>
+                                            <div class="progress course-progress">
+                                                <div class="progress-bar bg-success" role="progressbar" style="width: 60%"></div>
+                                            </div>
+                                            <div class="mt-3 d-flex justify-content-between">
+                                                <button class="btn btn-sm btn-outline-primary view-course-content" data-course="science">View Content</button>
+                                                <button class="btn btn-sm btn-primary continue-course" data-course="science">Continue</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card course-card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">English Literature</h5>
+                                            <p class="card-text text-muted">Classic and contemporary literature analysis.</p>
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <small class="text-muted">Progress</small>
+                                                <small class="text-muted">85%</small>
+                                            </div>
+                                            <div class="progress course-progress">
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: 85%"></div>
+                                            </div>
+                                            <div class="mt-3 d-flex justify-content-between">
+                                                <button class="btn btn-sm btn-outline-primary view-course-content" data-course="english">View Content</button>
+                                                <button class="btn btn-sm btn-primary continue-course" data-course="english">Continue</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card course-card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">History</h5>
+                                            <p class="card-text text-muted">World history from ancient civilizations to modern times.</p>
+                                            <div class="d-flex justify-content-between mb-1">
+                                                <small class="text-muted">Progress</small>
+                                                <small class="text-muted">45%</small>
+                                            </div>
+                                            <div class="progress course-progress">
+                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 45%"></div>
+                                            </div>
+                                            <div class="mt-3 d-flex justify-content-between">
+                                                <button class="btn btn-sm btn-outline-primary view-course-content" data-course="history">View Content</button>
+                                                <button class="btn btn-sm btn-primary continue-course" data-course="history">Continue</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Available Exams Section -->
+                        <div class="content-section" id="exams-section">
+                            <h4 class="mb-4">Available Exams</h4>
+                            <p class="text-muted mb-4">Select an exam to begin your assessment.</p>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card exam-card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Mathematics Final Exam</h5>
+                                            <p class="card-text text-muted">Comprehensive exam covering all topics from the semester.</p>
+                                            <div class="mb-2">
+                                                <small class="text-muted"><i class="far fa-clock me-1"></i> Duration: 2 hours</small>
+                                            </div>
+                                            <div class="mb-2">
+                                                <small class="text-muted"><i class="far fa-question-circle me-1"></i> 50 Questions</small>
+                                            </div>
+                                            <div class="mb-3">
+                                                <small class="text-muted"><i class="fas fa-trophy me-1"></i> Passing Score: 60%</small>
+                                            </div>
+                                            <button class="btn btn-primary btn-action w-100 start-exam" data-exam="math">
+                                                <i class="fas fa-play-circle me-2"></i> Start Exam
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card exam-card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Science Midterm</h5>
+                                            <p class="card-text text-muted">Covers physics, chemistry, and biology concepts from first half.</p>
+                                            <div class="mb-2">
+                                                <small class="text-muted"><i class="far fa-clock me-1"></i> Duration: 1.5 hours</small>
+                                            </div>
+                                            <div class="mb-2">
+                                                <small class="text-muted"><i class="far fa-question-circle me-1"></i> 40 Questions</small>
+                                            </div>
+                                            <div class="mb-3">
+                                                <small class="text-muted"><i class="fas fa-trophy me-1"></i> Passing Score: 65%</small>
+                                            </div>
+                                            <button class="btn btn-outline-primary btn-action w-100 view-exam-details" data-exam="science">
+                                                <i class="far fa-eye me-2"></i> View Details
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card exam-card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">History Quiz</h5>
+                                            <p class="card-text text-muted">Quick assessment on world history topics.</p>
+                                            <div class="mb-2">
+                                                <small class="text-muted"><i class="far fa-clock me-1"></i> Duration: 45 minutes</small>
+                                            </div>
+                                            <div class="mb-2">
+                                                <small class="text-muted"><i class="far fa-question-circle me-1"></i> 25 Questions</small>
+                                            </div>
+                                            <div class="mb-3">
+                                                <small class="text-muted"><i class="fas fa-trophy me-1"></i> Passing Score: 70%</small>
+                                            </div>
+                                            <button class="btn btn-outline-primary btn-action w-100 view-exam-details" data-exam="history">
+                                                <i class="far fa-eye me-2"></i> View Details
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card exam-card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">English Literature Test</h5>
+                                            <p class="card-text text-muted">Analysis of literary works and comprehension.</p>
+                                            <div class="mb-2">
+                                                <small class="text-muted"><i class="far fa-clock me-1"></i> Duration: 1 hour</small>
+                                            </div>
+                                            <div class="mb-2">
+                                                <small class="text-muted"><i class="far fa-question-circle me-1"></i> 30 Questions</small>
+                                            </div>
+                                            <div class="mb-3">
+                                                <small class="text-muted"><i class="fas fa-trophy me-1"></i> Passing Score: 60%</small>
+                                            </div>
+                                            <button class="btn btn-outline-primary btn-action w-100 view-exam-details" data-exam="english">
+                                                <i class="far fa-eye me-2"></i> View Details
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Results Section -->
+                        <div class="content-section" id="results-section">
+                            <h4 class="mb-4">Results & Progress</h4>
+                            <p class="text-muted mb-4">Track your performance across all exams and subjects.</p>
+                            
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            Exam History
+                                        </div>
+                                        <div class="card-body">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Exam</th>
+                                                        <th>Date</th>
+                                                        <th>Score</th>
+                                                        <th>Time Spent</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>English Literature</td>
+                                                        <td>10 May 2023</td>
+                                                        <td>92%</td>
+                                                        <td>55 min</td>
+                                                        <td><span class="badge bg-success">Excellent</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>History Quiz</td>
+                                                        <td>5 May 2023</td>
+                                                        <td>78%</td>
+                                                        <td>40 min</td>
+                                                        <td><span class="badge bg-success">Good</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Physics Test</td>
+                                                        <td>28 April 2023</td>
+                                                        <td>65%</td>
+                                                        <td>50 min</td>
+                                                        <td><span class="badge bg-warning">Average</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Mathematics Quiz</td>
+                                                        <td>15 April 2023</td>
+                                                        <td>88%</td>
+                                                        <td>45 min</td>
+                                                        <td><span class="badge bg-success">Good</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Chemistry Test</td>
+                                                        <td>5 April 2023</td>
+                                                        <td>72%</td>
+                                                        <td>55 min</td>
+                                                        <td><span class="badge bg-success">Good</span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            Performance Summary
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="result-summary">
+                                                <div class="score-circle">
+                                                    <div class="score-text">85%</div>
+                                                </div>
+                                                <h5>Overall Score</h5>
+                                                <p class="text-muted">Based on 5 completed exams</p>
+                                            </div>
+                                            
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between mb-1">
+                                                    <span>Mathematics</span>
+                                                    <span>88%</span>
+                                                </div>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 88%"></div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between mb-1">
+                                                    <span>Science</span>
+                                                    <span>72%</span>
+                                                </div>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-success" role="progressbar" style="width: 72%"></div>
+                                                </div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <div class="d-flex justify-content-between mb-1">
+                                                    <span>English</span>
+                                                    <span>92%</span>
+                                                </div>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-info" role="progressbar" style="width: 92%"></div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                    <span>History</span>
+                                                    <span>78%</span>
+                                                </div>
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-warning" role="progressbar" style="width: 78%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Study Material Section -->
+                        <div class="content-section" id="study-material-section">
+                            <h4 class="mb-4">Study Material</h4>
+                            <p class="text-muted mb-4">Access learning resources for your courses.</p>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Mathematics Resources</h5>
+                                            <p class="card-text text-muted">Textbooks, practice problems, and video lectures.</p>
+                                            <div class="list-group">
+                                                <a href="#" class="list-group-item list-group-item-action download-resource" data-resource="algebra">
+                                                    <i class="fas fa-file-pdf text-danger me-2"></i> Algebra Fundamentals
+                                                </a>
+                                                <a href="#" class="list-group-item list-group-item-action download-resource" data-resource="geometry">
+                                                    <i class="fas fa-file-pdf text-danger me-2"></i> Geometry Concepts
+                                                </a>
+                                                <a href="#" class="list-group-item list-group-item-action view-video" data-video="calculus">
+                                                    <i class="fas fa-video text-primary me-2"></i> Calculus Tutorials
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Science Resources</h5>
+                                            <p class="card-text text-muted">Lab manuals, theory notes, and experiment guides.</p>
+                                            <div class="list-group">
+                                                <a href="#" class="list-group-item list-group-item-action download-resource" data-resource="physics">
+                                                    <i class="fas fa-file-pdf text-danger me-2"></i> Physics Principles
+                                                </a>
+                                                <a href="#" class="list-group-item list-group-item-action download-resource" data-resource="chemistry">
+                                                    <i class="fas fa-file-pdf text-danger me-2"></i> Chemistry Reactions
+                                                </a>
+                                                <a href="#" class="list-group-item list-group-item-action view-video" data-video="biology">
+                                                    <i class="fas fa-video text-primary me-2"></i> Biology Concepts
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">English Resources</h5>
+                                            <p class="card-text text-muted">Literary analysis, grammar guides, and writing tips.</p>
+                                            <div class="list-group">
+                                                <a href="#" class="list-group-item list-group-item-action download-resource" data-resource="literature">
+                                                    <i class="fas fa-file-pdf text-danger me-2"></i> Literary Analysis Guide
+                                                </a>
+                                                <a href="#" class="list-group-item list-group-item-action download-resource" data-resource="grammar">
+                                                    <i class="fas fa-file-pdf text-danger me-2"></i> Grammar Handbook
+                                                </a>
+                                                <a href="#" class="list-group-item list-group-item-action view-video" data-video="writing">
+                                                    <i class="fas fa-video text-primary me-2"></i> Writing Techniques
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">History Resources</h5>
+                                            <p class="card-text text-muted">Historical timelines, primary sources, and analysis.</p>
+                                            <div class="list-group">
+                                                <a href="#" class="list-group-item list-group-item-action download-resource" data-resource="timeline">
+                                                    <i class="fas fa-file-pdf text-danger me-2"></i> World History Timeline
+                                                </a>
+                                                <a href="#" class="list-group-item list-group-item-action download-resource" data-resource="documents">
+                                                    <i class="fas fa-file-pdf text-danger me-2"></i> Historical Documents
+                                                </a>
+                                                <a href="#" class="list-group-item list-group-item-action view-video" data-video="analysis">
+                                                    <i class="fas fa-video text-primary me-2"></i> Historical Analysis
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Settings Section -->
+                        <div class="content-section" id="settings-section">
+                            <h4 class="mb-4">Account Settings</h4>
+                            <p class="text-muted mb-4">Manage your profile and preferences.</p>
+                            
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            Profile Information
+                                        </div>
+                                        <div class="card-body">
+                                            <form id="profileForm">
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label for="firstName" class="form-label">First Name</label>
+                                                        <input type="text" class="form-control" id="firstName" value="Student">
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="lastName" class="form-label">Last Name</label>
+                                                        <input type="text" class="form-control" id="lastName" value="User">
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="email" class="form-label">Email Address</label>
+                                                    <input type="email" class="form-control" id="email" value="student@eduexam.com">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="phone" class="form-label">Phone Number</label>
+                                                    <input type="tel" class="form-control" id="phone" value="+1 (555) 123-4567">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="bio" class="form-label">Bio</label>
+                                                    <textarea class="form-control" id="bio" rows="3">Dedicated student focused on academic excellence and continuous learning.</textarea>
+                                                </div>
+                                                <button type="submit" class="btn btn-primary" id="updateProfile">Update Profile</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="card mt-4">
+                                        <div class="card-header">
+                                            Change Password
+                                        </div>
+                                        <div class="card-body">
+                                            <form id="passwordForm">
+                                                <div class="mb-3">
+                                                    <label for="currentPassword" class="form-label">Current Password</label>
+                                                    <input type="password" class="form-control" id="currentPassword">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="newPassword" class="form-label">New Password</label>
+                                                    <input type="password" class="form-control" id="newPassword">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                                                    <input type="password" class="form-control" id="confirmPassword">
+                                                </div>
+                                                <button type="submit" class="btn btn-primary" id="changePassword">Change Password</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            Notification Preferences
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-check form-switch mb-3">
+                                                <input class="form-check-input" type="checkbox" id="examNotifications" checked>
+                                                <label class="form-check-label" for="examNotifications">Exam Notifications</label>
+                                            </div>
+                                            <div class="form-check form-switch mb-3">
+                                                <input class="form-check-input" type="checkbox" id="resultNotifications" checked>
+                                                <label class="form-check-label" for="resultNotifications">Result Notifications</label>
+                                            </div>
+                                            <div class="form-check form-switch mb-3">
+                                                <input class="form-check-input" type="checkbox" id="courseUpdates">
+                                                <label class="form-check-label" for="courseUpdates">Course Updates</label>
+                                            </div>
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="newsletter" checked>
+                                                <label class="form-check-label" for="newsletter">Educational Newsletter</label>
+                                            </div>
+                                            <button class="btn btn-outline-primary w-100 mt-3" id="saveNotifications">Save Preferences</button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="card mt-4">
+                                        <div class="card-header">
+                                            System Preferences
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="mb-3">
+                                                <label for="theme" class="form-label">Theme</label>
+                                                <select class="form-select" id="theme">
+                                                    <option selected>Light</option>
+                                                    <option>Dark</option>
+                                                    <option>Auto</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="language" class="form-label">Language</label>
+                                                <select class="form-select" id="language">
+                                                    <option selected>English</option>
+                                                    <option>Spanish</option>
+                                                    <option>French</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="timezone" class="form-label">Timezone</label>
+                                                <select class="form-select" id="timezone">
+                                                    <option selected>UTC-5 (Eastern Time)</option>
+                                                    <option>UTC-6 (Central Time)</option>
+                                                    <option>UTC-7 (Mountain Time)</option>
+                                                    <option>UTC-8 (Pacific Time)</option>
+                                                </select>
+                                            </div>
+                                            <button class="btn btn-outline-primary w-100" id="savePreferences">Save Preferences</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Admin Dashboard -->
+    <div class="dashboard" id="adminDashboard">
+        <div class="dashboard-header">
+            <h3><i class="fas fa-graduation-cap me-2"></i> Admin Dashboard</h3>
+            <div class="user-info">
+                <div class="user-avatar">A</div>
+                <span>Admin User</span>
+                <button class="logout-btn ms-3" id="adminLogout"><i class="fas fa-sign-out-alt me-1"></i> Logout</button>
+            </div>
+        </div>
+        <div class="dashboard-body">
+            <div class="row g-0">
+                <div class="col-md-3">
+                    <div class="sidebar">
+                        <ul class="sidebar-menu">
+                            <li><a href="#" class="active" data-section="admin-dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                            <li><a href="#" data-section="admin-students"><i class="fas fa-users"></i> Students</a></li>
+                            <li><a href="#" data-section="admin-courses"><i class="fas fa-book"></i> Courses</a></li>
+                            <li><a href="#" data-section="admin-exams"><i class="fas fa-file-alt"></i> Exams</a></li>
+                            <li><a href="#" data-section="admin-results"><i class="fas fa-chart-bar"></i> Results</a></li>
+                            <li><a href="#" data-section="admin-settings"><i class="fas fa-cog"></i> Settings</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="content-area">
+                        <!-- Admin Dashboard Section -->
+                        <div class="content-section active" id="admin-dashboard-section">
+                            <h4 class="mb-4">Admin Overview</h4>
+                            <p class="text-muted mb-4">System statistics and recent activities.</p>
+                            
+                            <div class="row mb-4">
+                                <div class="col-md-3">
+                                    <div class="card stats-card">
+                                        <div class="stats-number">150</div>
+                                        <div class="stats-label">Total Students</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card stats-card success">
+                                        <div class="stats-number">12</div>
+                                        <div class="stats-label">Courses</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card stats-card warning">
+                                        <div class="stats-number">45</div>
+                                        <div class="stats-label">Exams Created</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card stats-card danger">
+                                        <div class="stats-number">92%</div>
+                                        <div class="stats-label">Pass Rate</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="card">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <span>Recent Exam Activity</span>
+                                            <button class="btn btn-primary btn-sm btn-action" id="createNewExam">Create New Exam</button>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="list-group">
+                                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <h6 class="mb-1">Mathematics Final Exam</h6>
+                                                        <small class="text-muted">Created: 10 May 2023 | Participants: 145 students</small>
+                                                    </div>
+                                                    <div>
+                                                        <button class="btn btn-outline-primary btn-sm me-1 btn-action edit-exam" data-exam="math">Edit</button>
+                                                        <button class="btn btn-outline-success btn-sm btn-action view-results" data-exam="math">Results</button>
+                                                    </div>
+                                                </div>
+                                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <h6 class="mb-1">Science Midterm</h6>
+                                                        <small class="text-muted">Created: 5 May 2023 | Participants: 142 students</small>
+                                                    </div>
+                                                    <div>
+                                                        <button class="btn btn-outline-primary btn-sm me-1 btn-action edit-exam" data-exam="science">Edit</button>
+                                                        <button class="btn btn-outline-success btn-sm btn-action view-results" data-exam="science">Results</button>
+                                                    </div>
+                                                </div>
+                                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <h6 class="mb-1">English Literature Test</h6>
+                                                        <small class="text-muted">Created: 28 April 2023 | Participants: 148 students</small>
+                                                    </div>
+                                                    <div>
+                                                        <button class="btn btn-outline-primary btn-sm me-1 btn-action edit-exam" data-exam="english">Edit</button>
+                                                        <button class="btn btn-outline-success btn-sm btn-action view-results" data-exam="english">Results</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="card mt-4">
+                                        <div class="card-header">
+                                            System Notifications
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="alert alert-warning d-flex align-items-center">
+                                                <i class="fas fa-exclamation-triangle me-3 fs-4"></i>
+                                                <div>
+                                                    <h6 class="alert-heading mb-1">Maintenance Scheduled</h6>
+                                                    System maintenance is scheduled for June 20, 2023 from 2:00 AM to 4:00 AM.
+                                                </div>
+                                            </div>
+                                            <div class="alert alert-info d-flex align-items-center">
+                                                <i class="fas fa-info-circle me-3 fs-4"></i>
+                                                <div>
+                                                    <h6 class="alert-heading mb-1">New Feature Released</h6>
+                                                    The new exam analytics dashboard is now available for all instructors.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            Quick Actions
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="d-grid gap-2">
+                                                <button class="btn btn-outline-primary btn-action" id="addStudentBtn">
+                                                    <i class="fas fa-user-plus me-2"></i> Add Student
+                                                </button>
+                                                <button class="btn btn-outline-success btn-action" id="createCourseBtn">
+                                                    <i class="fas fa-book me-2"></i> Create Course
+                                                </button>
+                                                <button class="btn btn-outline-info btn-action" id="createExamBtn">
+                                                    <i class="fas fa-file-alt me-2"></i> Create Exam
+                                                </button>
+                                                <button class="btn btn-outline-warning btn-action" id="viewReportsBtn">
+                                                    <i class="fas fa-chart-bar me-2"></i> View Reports
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="card mt-4">
+                                        <div class="card-header">
+                                            Student Performance Overview
+                                        </div>
+                                        <div class="card-body">
+                                            <canvas id="performanceChart" height="250"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Admin Students Section -->
+                        <div class="content-section" id="admin-students-section">
+                            <h4 class="mb-4">Student Management</h4>
+                            <p class="text-muted mb-4">Manage student accounts and enrollment.</p>
+                            
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <span>All Students</span>
+                                    <button class="btn btn-primary btn-sm btn-action" id="addNewStudent">
+                                        <i class="fas fa-user-plus me-1"></i> Add New Student
+                                    </button>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Student ID</th>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Enrolled Courses</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>S1001</td>
+                                                    <td>John Smith</td>
+                                                    <td>john.smith@eduexam.com</td>
+                                                    <td>4</td>
+                                                    <td><span class="badge bg-success">Active</span></td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary me-1 edit-student" data-id="S1001">Edit</button>
+                                                        <button class="btn btn-sm btn-outline-info view-student" data-id="S1001">View</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>S1002</td>
+                                                    <td>Emily Johnson</td>
+                                                    <td>emily.johnson@eduexam.com</td>
+                                                    <td>3</td>
+                                                    <td><span class="badge bg-success">Active</span></td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary me-1 edit-student" data-id="S1002">Edit</button>
+                                                        <button class="btn btn-sm btn-outline-info view-student" data-id="S1002">View</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>S1003</td>
+                                                    <td>Michael Brown</td>
+                                                    <td>michael.brown@eduexam.com</td>
+                                                    <td>4</td>
+                                                    <td><span class="badge bg-warning">Inactive</span></td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary me-1 edit-student" data-id="S1003">Edit</button>
+                                                        <button class="btn btn-sm btn-outline-info view-student" data-id="S1003">View</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>S1004</td>
+                                                    <td>Sarah Davis</td>
+                                                    <td>sarah.davis@eduexam.com</td>
+                                                    <td>3</td>
+                                                    <td><span class="badge bg-success">Active</span></td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary me-1 edit-student" data-id="S1004">Edit</button>
+                                                        <button class="btn btn-sm btn-outline-info view-student" data-id="S1004">View</button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>S1005</td>
+                                                    <td>David Wilson</td>
+                                                    <td>david.wilson@eduexam.com</td>
+                                                    <td>4</td>
+                                                    <td><span class="badge bg-success">Active</span></td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-outline-primary me-1 edit-student" data-id="S1005">Edit</button>
+                                                        <button class="btn btn-sm btn-outline-info view-student" data-id="S1005">View</button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Other admin sections would go here -->
+                        <div class="content-section" id="admin-courses-section">
+                            <h4 class="mb-4">Course Management</h4>
+                            <p class="text-muted">Course management functionality would be implemented here.</p>
+                        </div>
+                        
+                        <div class="content-section" id="admin-exams-section">
+                            <h4 class="mb-4">Exam Management</h4>
+                            <p class="text-muted">Exam creation and management functionality would be implemented here.</p>
+                        </div>
+                        
+                        <div class="content-section" id="admin-results-section">
+                            <h4 class="mb-4">Results Analytics</h4>
+                            <p class="text-muted">Detailed results and analytics functionality would be implemented here.</p>
+                        </div>
+                        
+                        <div class="content-section" id="admin-settings-section">
+                            <h4 class="mb-4">System Settings</h4>
+                            <p class="text-muted">System configuration and settings would be implemented here.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Exam Interface Modal -->
+    <div class="modal fade" id="examModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="examModalTitle">Mathematics Final Exam</h5>
+                    <div class="timer" id="examTimer">01:59:45</div>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>Question <span id="currentQuestion">1</span> of <span id="totalQuestions">5</span></div>
+                        <div class="exam-progress w-50">
+                            <div class="progress">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 20%" id="examProgress"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="question-card card">
+                        <div class="card-body">
+                            <h6 class="card-title" id="questionText">What is the value of π (pi) rounded to two decimal places?</h6>
+                            
+                            <div class="mt-4">
+                                <input type="radio" name="answer" id="option1" class="option-input">
+                                <label for="option1" class="option-label">3.14</label>
+                                
+                                <input type="radio" name="answer" id="option2" class="option-input">
+                                <label for="option2" class="option-label">3.16</label>
+                                
+                                <input type="radio" name="answer" id="option3" class="option-input">
+                                <label for="option3" class="option-label">3.18</label>
+                                
+                                <input type="radio" name="answer" id="option4" class="option-input">
+                                <label for="option4" class="option-label">3.12</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between mt-4">
+                        <button class="btn btn-outline-secondary" id="prevQuestion" disabled>Previous</button>
+                        <button class="btn btn-primary" id="nextQuestion">Next Question</button>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" id="submitExam">Submit Exam</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div class="modal fade" id="resultModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Exam Results</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="result-summary">
+                        <div class="score-circle">
+                            <div class="score-text">85%</div>
+                        </div>
+                        <h4>Congratulations!</h4>
+                        <p class="text-muted">You have successfully completed the Mathematics Final Exam</p>
+                    </div>
+                    
+                    <div class="row text-start mt-4">
+                        <div class="col-md-6">
+                            <p><strong>Score:</strong> 85%</p>
+                            <p><strong>Correct Answers:</strong> 17/20</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Time Taken:</strong> 45:32</p>
+                            <p><strong>Status:</strong> <span class="badge bg-success">Passed</span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <button class="btn btn-primary me-2" id="viewDetailedResults">View Detailed Results</button>
+                        <button class="btn btn-outline-primary" id="returnToDashboard">Return to Dashboard</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast for notifications -->
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <i class="fas fa-bell text-primary me-2"></i>
+                <strong class="me-auto">Notification</strong>
+                <small>Just now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="toastMessage">
+                Action completed successfully!
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Application state
+        const appState = {
+            currentUser: null,
+            currentExam: null,
+            examQuestions: [],
+            currentQuestionIndex: 0,
+            userAnswers: {},
+            examTimer: null
+        };
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeEventListeners();
+        });
+
+        function initializeEventListeners() {
+            // Login functionality
+            document.getElementById('studentType').addEventListener('click', function() {
+                document.getElementById('studentType').classList.add('active');
+                document.getElementById('adminType').classList.remove('active');
+            });
+            
+            document.getElementById('adminType').addEventListener('click', function() {
+                document.getElementById('adminType').classList.add('active');
+                document.getElementById('studentType').classList.remove('active');
+            });
+            
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            
+            // Logout buttons
+            document.getElementById('studentLogout').addEventListener('click', logout);
+            document.getElementById('adminLogout').addEventListener('click', logout);
+            
+            // Navigation
+            document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                link.addEventListener('click', handleNavigation);
+            });
+            
+            // Student dashboard buttons
+            document.getElementById('viewAllExams').addEventListener('click', function() {
+                showNotification('Showing all available exams');
+                switchToSection('exams');
+            });
+            
+            document.querySelectorAll('.start-exam').forEach(button => {
+                button.addEventListener('click', function() {
+                    const examType = this.getAttribute('data-exam');
+                    startExam(examType);
+                });
+            });
+            
+            document.querySelectorAll('.view-exam-details').forEach(button => {
+                button.addEventListener('click', function() {
+                    const examType = this.getAttribute('data-exam');
+                    showExamDetails(examType);
+                });
+            });
+            
+            // Quick action buttons
+            document.getElementById('studyMaterialsBtn').addEventListener('click', function() {
+                showNotification('Opening study materials');
+                switchToSection('study-material');
+            });
+            
+            document.getElementById('practiceTestsBtn').addEventListener('click', function() {
+                showNotification('Loading practice tests');
+                // In a real app, this would load practice tests
+            });
+            
+            document.getElementById('progressReportBtn').addEventListener('click', function() {
+                showNotification('Generating progress report');
+                switchToSection('results');
+            });
+            
+            // Course buttons
+            document.querySelectorAll('.view-course-content').forEach(button => {
+                button.addEventListener('click', function() {
+                    const course = this.getAttribute('data-course');
+                    showCourseContent(course);
+                });
+            });
+            
+            document.querySelectorAll('.continue-course').forEach(button => {
+                button.addEventListener('click', function() {
+                    const course = this.getAttribute('data-course');
+                    continueCourse(course);
+                });
+            });
+            
+            // Study material buttons
+            document.querySelectorAll('.download-resource').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const resource = this.getAttribute('data-resource');
+                    downloadResource(resource);
+                });
+            });
+            
+            document.querySelectorAll('.view-video').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const video = this.getAttribute('data-video');
+                    viewVideo(video);
+                });
+            });
+            
+            // Settings forms
+            document.getElementById('profileForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                updateProfile();
+            });
+            
+            document.getElementById('passwordForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                changePassword();
+            });
+            
+            document.getElementById('saveNotifications').addEventListener('click', saveNotificationPreferences);
+            document.getElementById('savePreferences').addEventListener('click', saveSystemPreferences);
+            
+            // Admin dashboard buttons
+            document.getElementById('createNewExam').addEventListener('click', function() {
+                showNotification('Opening exam creation form');
+                // In a real app, this would open an exam creation form
+            });
+            
+            document.getElementById('addStudentBtn').addEventListener('click', function() {
+                showNotification('Opening student registration form');
+                // In a real app, this would open a student registration form
+            });
+            
+            document.getElementById('createCourseBtn').addEventListener('click', function() {
+                showNotification('Opening course creation form');
+                // In a real app, this would open a course creation form
+            });
+            
+            document.getElementById('createExamBtn').addEventListener('click', function() {
+                showNotification('Opening exam creation form');
+                // In a real app, this would open an exam creation form
+            });
+            
+            document.getElementById('viewReportsBtn').addEventListener('click', function() {
+                showNotification('Generating system reports');
+                switchToSection('admin-results');
+            });
+            
+            document.getElementById('addNewStudent').addEventListener('click', function() {
+                showNotification('Opening student registration form');
+                // In a real app, this would open a student registration form
+            });
+            
+            // Student management buttons
+            document.querySelectorAll('.edit-student').forEach(button => {
+                button.addEventListener('click', function() {
+                    const studentId = this.getAttribute('data-id');
+                    editStudent(studentId);
+                });
+            });
+            
+            document.querySelectorAll('.view-student').forEach(button => {
+                button.addEventListener('click', function() {
+                    const studentId = this.getAttribute('data-id');
+                    viewStudent(studentId);
+                });
+            });
+            
+            // Exam management buttons
+            document.querySelectorAll('.edit-exam').forEach(button => {
+                button.addEventListener('click', function() {
+                    const examType = this.getAttribute('data-exam');
+                    editExam(examType);
+                });
+            });
+            
+            document.querySelectorAll('.view-results').forEach(button => {
+                button.addEventListener('click', function() {
+                    const examType = this.getAttribute('data-exam');
+                    viewExamResults(examType);
+                });
+            });
+            
+            // Exam modal buttons
+            document.getElementById('prevQuestion').addEventListener('click', showPreviousQuestion);
+            document.getElementById('nextQuestion').addEventListener('click', showNextQuestion);
+            document.getElementById('submitExam').addEventListener('click', submitExam);
+            
+            // Result modal buttons
+            document.getElementById('viewDetailedResults').addEventListener('click', viewDetailedResults);
+            document.getElementById('returnToDashboard').addEventListener('click', returnToDashboard);
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const isAdmin = document.getElementById('adminType').classList.contains('active');
+            
+            // Simple authentication (in a real app, this would be server-side)
+            if ((isAdmin && username === 'admin' && password === 'admin123') || 
+                (!isAdmin && username === 'student' && password === 'student123')) {
+                
+                appState.currentUser = {
+                    username: username,
+                    isAdmin: isAdmin
+                };
+                
+                // Hide login page
+                document.getElementById('loginPage').style.display = 'none';
+                
+                // Show appropriate dashboard
+                if (isAdmin) {
+                    document.getElementById('adminDashboard').style.display = 'block';
+                    initAdminChart();
+                } else {
+                    document.getElementById('studentDashboard').style.display = 'block';
+                }
+                
+                showNotification(`Welcome back, ${username}!`);
+            } else {
+                // Show error message
+                document.getElementById('loginAlert').style.display = 'block';
+            }
+        }
+
+        function logout() {
+            document.getElementById('loginPage').style.display = 'block';
+            document.getElementById('studentDashboard').style.display = 'none';
+            document.getElementById('adminDashboard').style.display = 'none';
+            document.getElementById('loginForm').reset();
+            document.getElementById('loginAlert').style.display = 'none';
+            
+            appState.currentUser = null;
+            showNotification('You have been logged out successfully');
+        }
+
+        function handleNavigation(e) {
+            e.preventDefault();
+            
+            // Remove active class from all links
+            document.querySelectorAll('.sidebar-menu a').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Add active class to clicked link
+            this.classList.add('active');
+            
+            // Get the target section
+            const targetSection = this.getAttribute('data-section');
+            
+            // Hide all content sections
+            const dashboard = appState.currentUser.isAdmin ? 'admin' : '';
+            document.querySelectorAll(`#${dashboard}-dashboard .content-section`).forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show the target section
+            document.getElementById(`${targetSection}-section`).classList.add('active');
+        }
+
+        function switchToSection(sectionName) {
+            // Remove active class from all links
+            document.querySelectorAll('.sidebar-menu a').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Add active class to target link
+            document.querySelector(`.sidebar-menu a[data-section="${sectionName}"]`).classList.add('active');
+            
+            // Hide all content sections
+            const dashboard = appState.currentUser.isAdmin ? 'admin-' : '';
+            document.querySelectorAll(`.content-section`).forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show the target section
+            document.getElementById(`${dashboard}${sectionName}-section`).classList.add('active');
+        }
+
+        function startExam(examType) {
+            appState.currentExam = examType;
+            appState.currentQuestionIndex = 0;
+            appState.userAnswers = {};
+            
+            // Set up exam questions based on type
+            if (examType === 'math') {
+                appState.examQuestions = [
+                    {
+                        question: "What is the value of π (pi) rounded to two decimal places?",
+                        options: ["3.14", "3.16", "3.18", "3.12"],
+                        correctAnswer: 0
+                    },
+                    {
+                        question: "What is the derivative of x²?",
+                        options: ["x", "2x", "2", "x²"],
+                        correctAnswer: 1
+                    },
+                    {
+                        question: "Solve for x: 2x + 5 = 15",
+                        options: ["5", "10", "7.5", "2.5"],
+                        correctAnswer: 0
+                    },
+                    {
+                        question: "What is the area of a circle with radius 5?",
+                        options: ["10π", "25π", "50π", "5π"],
+                        correctAnswer: 1
+                    },
+                    {
+                        question: "What is the value of 5! (5 factorial)?",
+                        options: ["25", "60", "120", "720"],
+                        correctAnswer: 2
+                    }
+                ];
+            } else {
+                // Default questions for other exams
+                appState.examQuestions = [
+                    {
+                        question: "Sample question 1",
+                        options: ["Option A", "Option B", "Option C", "Option D"],
+                        correctAnswer: 0
+                    },
+                    {
+                        question: "Sample question 2",
+                        options: ["Option A", "Option B", "Option C", "Option D"],
+                        correctAnswer: 1
+                    }
+                ];
+            }
+            
+            const examModal = new bootstrap.Modal(document.getElementById('examModal'));
+            document.getElementById('examModalTitle').textContent = 
+                examType === 'math' ? 'Mathematics Final Exam' : 
+                examType === 'science' ? 'Science Midterm' : 
+                examType === 'history' ? 'History Quiz' : 'English Literature Test';
+            
+            showQuestion(0);
+            examModal.show();
+            
+            // Start timer
+            startExamTimer();
+        }
+
+        function showQuestion(index) {
+            if (index < 0 || index >= appState.examQuestions.length) return;
+            
+            appState.currentQuestionIndex = index;
+            const question = appState.examQuestions[index];
+            
+            document.getElementById('currentQuestion').textContent = index + 1;
+            document.getElementById('totalQuestions').textContent = appState.examQuestions.length;
+            document.getElementById('examProgress').style.width = `${((index + 1) / appState.examQuestions.length) * 100}%`;
+            document.getElementById('questionText').textContent = question.question;
+            
+            // Clear previous selections
+            document.querySelectorAll('.option-input').forEach((input, i) => {
+                input.checked = false;
+                document.querySelector(`label[for="option${i+1}"]`).textContent = question.options[i];
+            });
+            
+            // Check if user has already answered this question
+            if (appState.userAnswers[index] !== undefined) {
+                document.getElementById(`option${appState.userAnswers[index] + 1}`).checked = true;
+            }
+            
+            // Update navigation buttons
+            document.getElementById('prevQuestion').disabled = index === 0;
+            document.getElementById('nextQuestion').textContent = 
+                index === appState.examQuestions.length - 1 ? 'Finish Exam' : 'Next Question';
+                
+            // Add event listeners for answer selection
+            document.querySelectorAll('.option-input').forEach((input, i) => {
+                input.onclick = function() {
+                    appState.userAnswers[index] = i;
+                };
+            });
+        }
+
+        function showPreviousQuestion() {
+            showQuestion(appState.currentQuestionIndex - 1);
+        }
+
+        function showNextQuestion() {
+            if (appState.currentQuestionIndex < appState.examQuestions.length - 1) {
+                showQuestion(appState.currentQuestionIndex + 1);
+            } else {
+                // Last question - submit exam
+                submitExam();
+            }
+        }
+
+        function startExamTimer() {
+            let timeLeft = 7200; // 2 hours in seconds
+            const timerElement = document.getElementById('examTimer');
+            
+            appState.examTimer = setInterval(function() {
+                const hours = Math.floor(timeLeft / 3600);
+                const minutes = Math.floor((timeLeft % 3600) / 60);
+                const seconds = timeLeft % 60;
+                
+                timerElement.textContent = 
+                    `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                timeLeft--;
+                
+                if (timeLeft < 0) {
+                    clearInterval(appState.examTimer);
+                    submitExam();
+                }
+            }, 1000);
+        }
+
+        function submitExam() {
+            clearInterval(appState.examTimer);
+            
+            // Calculate score
+            let correctAnswers = 0;
+            for (let i = 0; i < appState.examQuestions.length; i++) {
+                if (appState.userAnswers[i] === appState.examQuestions[i].correctAnswer) {
+                    correctAnswers++;
+                }
+            }
+            
+            const score = Math.round((correctAnswers / appState.examQuestions.length) * 100);
+            
+            // Close exam modal
+            const examModal = bootstrap.Modal.getInstance(document.getElementById('examModal'));
+            examModal.hide();
+            
+            // Show result modal
+            const resultModal = new bootstrap.Modal(document.getElementById('resultModal'));
+            document.querySelector('.score-text').textContent = `${score}%`;
+            resultModal.show();
+            
+            showNotification(`Exam submitted! Your score: ${score}%`);
+        }
+
+        function viewDetailedResults() {
+            const resultModal = bootstrap.Modal.getInstance(document.getElementById('resultModal'));
+            resultModal.hide();
+            showNotification('Showing detailed exam results');
+            // In a real app, this would navigate to a detailed results page
+        }
+
+        function returnToDashboard() {
+            const resultModal = bootstrap.Modal.getInstance(document.getElementById('resultModal'));
+            resultModal.hide();
+            showNotification('Returning to dashboard');
+        }
+
+        function showExamDetails(examType) {
+            showNotification(`Showing details for ${examType} exam`);
+            // In a real app, this would show a modal with exam details
+        }
+
+        function showCourseContent(course) {
+            showNotification(`Opening content for ${course} course`);
+            // In a real app, this would navigate to course content
+        }
+
+        function continueCourse(course) {
+            showNotification(`Continuing ${course} course`);
+            // In a real app, this would resume the course from last position
+        }
+
+        function downloadResource(resource) {
+            showNotification(`Downloading ${resource} resource`);
+            // In a real app, this would initiate a file download
+        }
+
+        function viewVideo(video) {
+            showNotification(`Playing ${video} video`);
+            // In a real app, this would open a video player
+        }
+
+        function updateProfile() {
+            showNotification('Profile updated successfully');
+            // In a real app, this would send the data to a server
+        }
+
+        function changePassword() {
+            showNotification('Password changed successfully');
+            // In a real app, this would send the data to a server
+        }
+
+        function saveNotificationPreferences() {
+            showNotification('Notification preferences saved');
+        }
+
+        function saveSystemPreferences() {
+            showNotification('System preferences saved');
+        }
+
+        function editStudent(studentId) {
+            showNotification(`Editing student: ${studentId}`);
+            // In a real app, this would open an edit form
+        }
+
+        function viewStudent(studentId) {
+            showNotification(`Viewing student: ${studentId}`);
+            // In a real app, this would show student details
+        }
+
+        function editExam(examType) {
+            showNotification(`Editing exam: ${examType}`);
+            // In a real app, this would open an exam editor
+        }
+
+        function viewExamResults(examType) {
+            showNotification(`Viewing results for: ${examType}`);
+            // In a real app, this would show exam analytics
+        }
+
+        function showNotification(message) {
+            const toastMessage = document.getElementById('toastMessage');
+            const toast = new bootstrap.Toast(document.getElementById('liveToast'));
+            
+            toastMessage.textContent = message;
+            toast.show();
+        }
+
+        function initAdminChart() {
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            const performanceChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Mathematics', 'Science', 'English', 'History', 'Physics', 'Chemistry'],
+                    datasets: [{
+                        label: 'Average Score (%)',
+                        data: [85, 78, 92, 76, 65, 80],
+                        backgroundColor: [
+                            'rgba(52, 152, 219, 0.7)',
+                            'rgba(46, 204, 113, 0.7)',
+                            'rgba(155, 89, 182, 0.7)',
+                            'rgba(241, 196, 15, 0.7)',
+                            'rgba(230, 126, 34, 0.7)',
+                            'rgba(231, 76, 60, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgb(52, 152, 219)',
+                            'rgb(46, 204, 113)',
+                            'rgb(155, 89, 182)',
+                            'rgb(241, 196, 15)',
+                            'rgb(230, 126, 34)',
+                            'rgb(231, 76, 60)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
